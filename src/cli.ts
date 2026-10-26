@@ -63,7 +63,6 @@ async function open(config: AppConfig, target: string | undefined): Promise<void
   let request: { postId?: number; url?: string } | undefined;
   if (target && /^\d+$/.test(target)) request = { postId: Number(target) };
   else if (target) request = { url: target };
-  else if (config.session.wpUrl) request = { url: `${config.session.wpUrl}/wp-admin/` };
 
   if (request) {
     try {
@@ -71,6 +70,15 @@ async function open(config: AppConfig, target: string | undefined): Promise<void
       log(`editor ready: ${status.title ?? ''} ${status.editorUrl ?? ''}`.trim());
     } catch (e) {
       log(`no editor yet (${e instanceof Error ? e.message : String(e)}). Log in in the Chrome window and open a page with "Edit with Elementor".`);
+    }
+  } else if (config.session.wpUrl) {
+    const adminUrl = `${config.session.wpUrl.replace(/\/+$/, '')}/wp-admin/`;
+    try {
+      const page = await api.session.pageForNavigation();
+      await api.session.navigate(page, adminUrl, { allowUnload: true, timeoutMs: 30000 });
+      log(`opened ${adminUrl}; open a page with "Edit with Elementor" or pass a post ID next time.`);
+    } catch (e) {
+      log(`${e instanceof Error ? e.message : String(e)} — log in in the Chrome window; the profile keeps the login.`);
     }
   } else {
     log('no URL given and ELIVE_WP_URL not set; navigate to your site in the Chrome window.');

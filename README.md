@@ -99,7 +99,7 @@ The server speaks MCP over stdio; it logs only to stderr.
 { "op": "set_custom_css", "id": "c1a2b3", "css": "selector { scroll-margin-top: 80px; }" }
 ```
 
-All ops of one call form a single undo step. Element IDs come only from `get_canvas_skeleton` or from `create`/`duplicate` results. A failing op does not stop the others.
+All ops of one call form a single undo step. Element IDs come only from `get_canvas_skeleton` or from `create`/`duplicate` results; within one batch, `"$0"`, `"$1"`, … as `id`/`parentId` refer to the element created by that op index, so a container and its children fit into one undo step. A failing op does not stop the others.
 
 Errors are returned as tool results with `isError: true` and a JSON body `{ "error", "code", "hint" }`, e.g. `not_connected`, `no_editor_tab`, `element_not_found`, `invalid_ops`.
 
@@ -141,6 +141,7 @@ bash dev/bootstrap.sh   # WSL/Linux with Docker: WordPress + MariaDB + wp-cli on
 npm test                # unit tests (vitest)
 npm run typecheck
 npm run e2e             # Playwright flows against the dev instance (real $e.run, undo, save, screenshot)
+npx tsx e2e/mcp-smoke.ts  # acceptance run: built server over stdio, driven by a real MCP client
 npm run dev             # run the CLI from source via tsx
 ```
 

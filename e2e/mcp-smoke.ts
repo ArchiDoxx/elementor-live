@@ -81,7 +81,7 @@ try {
     const r2 = await call('mutate_canvas', {
       label: 'smoke children',
       ops: [
-        { op: 'create', parentId: containerId, elType: 'widget', widgetType: 'heading', settings: { title: 'Smoke Heading', header_size: 'h2' } },
+        { op: 'create', parentId: containerId, elType: 'widget', widgetType: 'heading', settings: { title: 'Smoke Heading', header_size: 'h3' } },
         { op: 'create', parentId: containerId, elType: 'widget', widgetType: 'button', settings: { text: 'Go' } },
       ],
     });
@@ -95,7 +95,7 @@ try {
     if (!c) throw new Error('container missing in skeleton');
     const h = c.children.find((n: any) => n.id === headingId);
     if (!h || !/Smoke Heading/.test(h.label ?? '')) throw new Error('heading label missing: ' + JSON.stringify(h));
-    if (h.settings?.header_size !== 'h2') throw new Error('non-default settings missing: ' + JSON.stringify(h.settings));
+    if (h.settings?.header_size !== 'h3') throw new Error('non-default settings missing: ' + JSON.stringify(h.settings));
     return `${json.nodeCount} nodes`;
   });
   await step('inspect_element(heading) has box + computed + parentChain', async () => {
