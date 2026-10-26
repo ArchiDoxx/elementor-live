@@ -208,7 +208,7 @@ export interface SessionConfig {
   profileDir: string;
   /** Wenn gesetzt: an laufenden Chrome anhängen (z. B. http://localhost:9222) statt zu starten. */
   cdpUrl?: string;
-  /** Start-URL beim ersten Launch (z. B. WordPress-Login). */
-  startUrl?: string;
+  /** Basis-URL der WordPress-Site (z. B. http://localhost:8080); nötig für openEditor({postId}). */
+  wpUrl?: string;
   headless: boolean;
 }
