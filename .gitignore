@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.elementor-live/
+*.log
+.env
+e2e/artifacts/
